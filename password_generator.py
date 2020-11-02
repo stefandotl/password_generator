@@ -1,11 +1,15 @@
-import PIL
+from PIL import Image
+from PIL import ImageDraw
+from PIL import ImageFont
+
+import numpy as np
 import random
 
 """This module creates an DsiN-password-card"""
 
 alphabet_small = "abcdefghijklmnopqrstuvwxyz"
 alphabet_large = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-alphabet_list = list(" ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+alphabet_list = list("#ABCDEFGHIJKLMNOPQRSTUVWXYZ")
 numbers = "0123456789"
 first_column = [1,2,3,4,5,6,7,8,9,10,11,12]
 top_col = iter(first_column)
@@ -38,4 +42,13 @@ with open("textfile.txt", "w") as txt_file:
             line_arr = []
         print("\n", file=txt_file)
 
-print(all_array)
+
+arr_np = list(np.array(all_array).T)
+
+for line in arr_np:
+    img = Image.new("1", (100, 100), "white")
+    draw = ImageDraw.Draw(img)
+    # print(line[0])
+    font = ImageFont.truetype("Tests/fonts/NotoSans-Regular.ttf", 24)
+    draw.text((50, 50), str(line[0]), fill="black", anchor="mm", font=font)
+    img.save("bild.jpg")
