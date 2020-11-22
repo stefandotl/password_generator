@@ -52,3 +52,4 @@ for line in arr_np:
     font = ImageFont.truetype("Tests/fonts/NotoSans-Regular.ttf", 24)
     draw.text((50, 50), str(line[0]), fill="black", anchor="mm", font=font)
     img.save("bild.jpg")
+    
