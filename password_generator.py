@@ -18,10 +18,17 @@ columns = 26 + 2
 
 def make_imgs(char_arr):
     counter = 0     # counts all images
-    for line in char_arr:
-        for char in line:
+    for i, line in enumerate(char_arr):
+        for j, char in enumerate(line):
             counter += 1
-            img = Image.new("L", (width, height), "white")
+            if i == 0 or i == 13 or j==0 or j==27:
+                color = "lightgreen"
+            else:
+                if i%2 == 0:
+                    color = "lightgray"
+                else:
+                    color = "white"
+            img = Image.new("RGB", (width, height), color=color)
             draw = ImageDraw.Draw(img)
             font = ImageFont.truetype('/usr/share/fonts/truetype/freefont/FreeSansBold.ttf', 80)
             draw.rectangle([0,0,99,99], None, 0, 2)
@@ -62,7 +69,7 @@ with open("textfile.txt", "w") as txt_file:
                     print(j_count, file=txt_file, end="")                    
                     line_arr.append(j_count)
                     j_count += 1
-                    
+
                 else:
                     rand_num = random.randint(0, 66)
                     print(all_signs[rand_num], file=txt_file, end="")
@@ -89,7 +96,7 @@ for i in range(1, num_if_imgs):
 width_sum = 28*width
 height_sum = 14*height
 
-whole_image = Image.new("L", (width_sum, height_sum))
+whole_image = Image.new("RGB", (width_sum, height_sum))
 
 x_offset = 0
 y_offset = 0
