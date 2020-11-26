@@ -2,10 +2,33 @@ from PIL import Image
 from PIL import ImageDraw
 from PIL import ImageFont
 
+import os
+
+import matplotlib.pyplot as plt
 import numpy as np
 import random
 
 """This module creates an DsiN-password-card"""
+#todo: make default Font!
+
+width = 100
+height = 100
+rows = 12 + 1
+columns = 26 + 1
+
+def make_imgs(char_arr):
+    counter = 0     # counts all images
+    for line in char_arr:
+        for char in line:
+            counter += 1
+            img = Image.new("L", (width, height), "white")
+            draw = ImageDraw.Draw(img)
+            font = ImageFont.truetype('/usr/share/fonts/truetype/freefont/FreeSansBold.ttf', 80)
+            draw.rectangle([0,0,99,99], None, 0, 2)
+            draw.text((50, 53), str(char), fill="black", anchor="mm", font=font)
+            img_name = "imgs/" + str(counter) + ".jpg"
+            img.save(img_name)
+
 
 alphabet_small = "abcdefghijklmnopqrstuvwxyz"
 alphabet_large = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
@@ -21,13 +44,12 @@ line_arr = []
 all_array = []
 
 with open("textfile.txt", "w") as txt_file:
-
-    for row in range(13):
+    for row in range(rows):
         if row == 0:  # prints the first line
-            print(" " + alphabet_large, file=txt_file, end="")
+            print("#" + alphabet_large + "#", file=txt_file, end="")
             all_array.append(alphabet_list)
         else:
-            for column in range(27):
+            for column in range(columns):
 
                 if column == 0:
                     first_char = next(top_col)
@@ -42,14 +64,36 @@ with open("textfile.txt", "w") as txt_file:
             line_arr = []
         print("\n", file=txt_file)
 
+arr_np = list(np.array(all_array))
 
-arr_np = list(np.array(all_array).T)
+make_imgs(arr_np)
 
-for line in arr_np:
-    img = Image.new("1", (100, 100), "white")
-    draw = ImageDraw.Draw(img)
-    # print(line[0])
-    font = ImageFont.truetype("Tests/fonts/NotoSans-Regular.ttf", 24)
-    draw.text((50, 50), str(line[0]), fill="black", anchor="mm", font=font)
-    img.save("bild.jpg")
+img_arr = []
+
+num_if_imgs = len(os.listdir('./imgs/'))+1
+
+for i in range(1, num_if_imgs):
+
+    img_dir = 'imgs/' + str(i) + '.jpg'  
+    opened_img = Image.open(img_dir)
+    img_arr.append(opened_img)
+
+width_sum = 27*width
+height_sum = 13*height
+
+whole_image = Image.new("L", (width_sum, height_sum))
+
+x_offset = 0
+y_offset = 0
+
+for img in img_arr:
+    whole_image.paste(img, (x_offset, y_offset))
+    x_offset += width
+    if x_offset >= width_sum: 
+        x_offset = 0  
+        y_offset += height
+
+whole_image.save("Safe_Card.jpg")
+
+
     
