@@ -13,8 +13,8 @@ import random
 
 width = 100
 height = 100
-rows = 12 + 1
-columns = 26 + 1
+rows = 12 + 2
+columns = 26 + 2
 
 def make_imgs(char_arr):
     counter = 0     # counts all images
@@ -32,7 +32,7 @@ def make_imgs(char_arr):
 
 alphabet_small = "abcdefghijklmnopqrstuvwxyz"
 alphabet_large = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-alphabet_list = list("#ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+alphabet_list = list("#ABCDEFGHIJKLMNOPQRSTUVWXYZ#")
 numbers = "0123456789"
 first_column = [1,2,3,4,5,6,7,8,9,10,11,12]
 top_col = iter(first_column)
@@ -42,19 +42,27 @@ all_signs = alphabet_small + alphabet_large + numbers + special_signs
 
 line_arr = []
 all_array = []
+i_count = 1
+j_count = 1
 
 with open("textfile.txt", "w") as txt_file:
     for row in range(rows):
-        if row == 0:  # prints the first line
-            print("#" + alphabet_large + "#", file=txt_file, end="")
+        if row == 0 or row == 13:  # prints the first line
+            print(alphabet_list, file=txt_file, end="")
             all_array.append(alphabet_list)
         else:
             for column in range(columns):
 
-                if column == 0:
-                    first_char = next(top_col)
-                    print(first_char, file=txt_file, end="")
-                    line_arr.append(first_char)
+                if column == 0:                    
+                    print(i_count, file=txt_file, end="")                    
+                    line_arr.append(i_count)
+                    i_count += 1
+
+                elif column == 27:
+                    print(j_count, file=txt_file, end="")                    
+                    line_arr.append(j_count)
+                    j_count += 1
+                    
                 else:
                     rand_num = random.randint(0, 66)
                     print(all_signs[rand_num], file=txt_file, end="")
@@ -78,8 +86,8 @@ for i in range(1, num_if_imgs):
     opened_img = Image.open(img_dir)
     img_arr.append(opened_img)
 
-width_sum = 27*width
-height_sum = 13*height
+width_sum = 28*width
+height_sum = 14*height
 
 whole_image = Image.new("L", (width_sum, height_sum))
 
