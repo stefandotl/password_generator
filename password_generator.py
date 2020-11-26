@@ -30,7 +30,7 @@ def make_imgs(char_arr):
                     color = "white"
             img = Image.new("RGB", (width, height), color=color)
             draw = ImageDraw.Draw(img)
-            font = ImageFont.truetype('/usr/share/fonts/truetype/freefont/FreeSansBold.ttf', 80)
+            font = ImageFont.truetype('freefont/FreeSerifBoldItalic.ttf', 80)
             draw.rectangle([0,0,99,99], None, 0, 2)
             draw.text((50, 53), str(char), fill="black", anchor="mm", font=font)
             img_name = "imgs/" + str(counter) + ".jpg"
@@ -49,8 +49,8 @@ all_signs = alphabet_small + alphabet_large + numbers + special_signs
 
 line_arr = []
 all_array = []
-i_count = 1
-j_count = 1
+i_count = 1    # for const-signs
+j_count = 1    # for const-signs
 
 with open("textfile.txt", "w") as txt_file:
     for row in range(rows):
